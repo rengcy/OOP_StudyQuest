@@ -8,6 +8,7 @@ public class User {
 
     private ArrayList<Task> tasks;
     private ArrayList<Badge> badges;
+    private ArrayList<Category> categories;
 
     // CONSTRUCTOR
     public User(String name) {
@@ -19,12 +20,31 @@ public class User {
 
         tasks = new ArrayList<>();
         badges = new ArrayList<>();
+        categories = new ArrayList<>();
+
+        // Add default categories
+        categories.add(new Category("School", "Medium"));
+        categories.add(new Category("Personal", "Easy"));
+        categories.add(new Category("Fitness", "Medium"));
+        categories.add(new Category("Review", "Medium"));
+        categories.add(new Category("Assignment", "Hard"));
     }
 
     // ADD TASK
     public void addTask(String title, String category, int xpReward) {
 
         tasks.add(new Task(title, category, xpReward));
+    }
+
+    // DELETE TASK
+    public boolean deleteTask(int index) {
+
+        if (index < 0 || index >= tasks.size()) {
+            return false;
+        }
+
+        tasks.remove(index);
+        return true;
     }
 
     // SHOW TASKS
@@ -151,7 +171,7 @@ public class User {
 
         for (Badge b : badges) {
 
-            if (b.getName().equals(badgeName())) {
+            if (b.getName().equals(badgeName)) {
 
                 return true;
             }
@@ -191,5 +211,72 @@ public class User {
     public ArrayList<Task> getTasks() {
 
         return tasks;
+    }
+
+    // LOAD TASKS
+    public void loadTasks(ArrayList<Task> loadedTasks) {
+
+        this.tasks = loadedTasks;
+    }
+
+    // GET XP
+    public int getXP() {
+        return xp;
+    }
+
+    // GET LEVEL
+    public int getLevel() {
+        return level;
+    }
+
+    // SET XP AND LEVEL (WITHOUT RECALCULATING BADGES)
+    public void setStats(int xp, int level) {
+        this.xp = xp;
+        this.level = level;
+    }
+
+    // GET BADGES
+    public ArrayList<Badge> getBadges() {
+        return badges;
+    }
+
+    // LOAD BADGES
+    public void loadBadges(ArrayList<Badge> loadedBadges) {
+        this.badges = loadedBadges;
+    }
+
+    // GET CATEGORIES
+    public ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    // LOAD CATEGORIES
+    public void loadCategories(ArrayList<Category> loadedCategories) {
+        this.categories = loadedCategories;
+    }
+
+    // ADD CUSTOM CATEGORY
+    public void addCategory(String name, String difficulty) {
+        categories.add(new Category(name, difficulty));
+    }
+
+    // DELETE CATEGORY
+    public boolean deleteCategory(int index) {
+
+        if (index < 0 || index >= categories.size()) {
+            return false;
+        }
+
+        categories.remove(index);
+        return true;
+    }
+
+    // SHOW CATEGORIES
+    public void showCategories() {
+        System.out.println("\n===== AVAILABLE CATEGORIES =====");
+        for (int i = 0; i < categories.size(); i++) {
+            Category c = categories.get(i);
+            System.out.println((i + 1) + ". " + c.getName() + " (" + c.getDifficulty() + ") - " + c.getXpReward() + " XP");
+        }
     }
 }
